@@ -1,7 +1,10 @@
 import socketio
 from flask import Flask
 from forum.routes import rt
+<<<<<<< HEAD
 
+=======
+>>>>>>> 78da321 (Viewing profile now displays content in markdown)
 
 
 def create_app():

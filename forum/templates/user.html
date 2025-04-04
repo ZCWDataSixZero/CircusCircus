@@ -12,6 +12,7 @@
                         <a href="/viewpost?post={{ post.id }}">{{post.title}}</a>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <p>{{ post.content }}</p>
 =======
                         <p>{{ post.content | safe }}</p>
@@ -19,6 +20,9 @@
 =======
                         <p>{{ post.content_html | safe }}</p>
 >>>>>>> 1135809 (users can only view posts in profile, they will have to click on the post to view entire post.)
+=======
+                        <p>{{post.content | safe }}</p>
+>>>>>>> 78da321 (Viewing profile now displays content in markdown)
                     </li>
                 {% endfor %}
             </ul>
