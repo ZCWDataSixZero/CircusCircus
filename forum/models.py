@@ -19,9 +19,8 @@ class User(UserMixin, db.Model):
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
     messages = db.relationship("Message", backref="user")
-    #sender_id =  db.relationship("Message", backref="user" )
-    #messages_sent: db.WriteOnlyMapped['Message'] = db.relationship(foreign_keys="Message.sender_id", backref='author')
-    #messages_received: db.WriteOnlyMapped['Message'] = db.relationship(foreign_keys="Message.recipient_id", backref='recipient')
+    #messages_sent = db.relationship("Message", backref='user')
+    #messages_received = db.relationship("Message", backref='user')
 
     def __init__(self, email, username, password):
         self.email = email
@@ -126,24 +125,28 @@ class Comment(db.Model):
         return self.savedresponce
 
 class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
     content = db.Column(db.Text)
     postdate = db.Column(db.DateTime)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    #sender_id = db.Column(db.Integer, db.ForeignKey('user_id'))
-    #recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    #post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
-    #author: db.Mapped[User] = db.relationship(foreign_keys='Message.sender_id', backref='messages_sent')
-    #recipient: db.Mapped[User] = db.relationship(foreign_keys='recipient_id', backref='messages_received')
+    sender_id = db.Column(db.Integer, db.ForeignKey('user_id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    #composite key made of key in User model
+    __table_args__ = (
+        db.PrimaryKeyConstraint(
+            sender_id, recipient_id,
+        ),
+    )
 
     lastcheck = None
     savedresponce = None
 
-    def __init__(self, title, content, postdate):
+    def __init__(self, title, content, postdate, sender_id, recipient_id):
         self.title = title
         self.content = content
         self.postdate = postdate
+        self.sender_id = sender_id
+        self.recipient_id = recipient_id
 
     def get_time_string(self):
         # this only needs to be calculated every so often, not for every request

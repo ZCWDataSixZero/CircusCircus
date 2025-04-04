@@ -133,7 +133,7 @@ def comment():
     return redirect("/viewpost?post=" + str(post_id))
 
 @login_required
-@rt.route('/message', methods=['GET', 'POST'])
+@rt.route('/create_message', methods=['GET', 'POST'])
 def message():
    message_id = int(request.args.get("message"))
    message = Message.query.filter(Message.id == message_id).first()
@@ -142,9 +142,15 @@ def message():
    content = request.form['content']
    postdate = datetime.datetime.now()
    current_user.messages.append(message)
-   messages.append(messages)
+   #messages.append(messages)
    db.session.commit()
-   render_template("message.html", message=message)
+   return render_template("message.html", message=message, content=content, postdate=postdate)
+
+
+
+
+
+
 
 #need and action for message
 
