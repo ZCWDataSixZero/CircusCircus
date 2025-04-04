@@ -169,12 +169,12 @@ def action_post():
     if not valid_title(title):
       errors.append("Title must be between 4 and 140 characters long!")
       retry = True
-    if not valid_content(content_html):
+    if not valid_content(content):
       errors.append("Post must be between 10 and 5000 characters long!")
       retry = True
     if retry:
       return render_template("createpost.html", content_html=Markup(content_html), subforum=subforum,  errors=errors)
-    post = Post(title, content_html, datetime.datetime.now())
+    post = Post(title, content, datetime.datetime.now())
     subforum.posts.append(post)
     user.posts.append(post)
     db.session.commit()
