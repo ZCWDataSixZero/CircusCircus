@@ -2,21 +2,10 @@
 {% block body %}
 {{ path|safe }}
 
-<h1>Hi</h1>
-<div class="sendmessage">
-	Enter your message here:<br>
-	<div class="messageinfo">
-	You are sending to {{ message.recipient_id}}
-	</div>
-
-	<form action="action_post?sub={{ message.id }}" method="POST">
-
-		<input class="inputbox" size="100" type="text" placeholder="Title" name="title"><br>
-
-		<textarea class="inputbox" rows="25" cols="100"  name="content" placeholder="Enter message here"></textarea><br>
-
-		<input class="inputbox" type="submit" value="Send message">
-	</form>
+<p>Message</p>
+<div class="message_display">
+    <p>From: {{ message.sender_id }}</p>
+    <p>To: {{ message.recipient_id }}</p>
+    <p>Content: {{ message.content }}</p>
+    <p>Date: {{ message.postdate }}</p>
 </div>
-
-{% endblock %}

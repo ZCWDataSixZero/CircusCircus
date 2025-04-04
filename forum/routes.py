@@ -132,19 +132,35 @@ def comment():
     db.session.commit()
     return redirect("/viewpost?post=" + str(post_id))
 
+# @login_required
+# @rt.route('/message', methods=['GET', 'POST'])
+# def message():
+#    user_id = request.args.get('user_id')
+#    if user_id:
+#         user = User.query.get_or_404(user_id)
+#         return render_template('message.html', user=user, message=message,
+#                                content=content, postdate=postdate)
+#    elif current_user.is_authenticated:
+#        return redirect(url_for('routes.messages', user_id=current_user.id))
+#    else:
+#        return redirect('/loginform')
+#    # content = request.form['content']
+#    # postdate = datetime.datetime.now()
+#    # current_user.messages.append(message)
+#    # #messages.append(messages)
+#    # db.session.commit()
+
 @login_required
-@rt.route('/create_message', methods=['GET', 'POST'])
-def message():
-   message_id = int(request.args.get("message"))
-   message = Message.query.filter(Message.id == message_id).first()
-   if not message:
-        return error("That message does not exist!")
-   content = request.form['content']
-   postdate = datetime.datetime.now()
-   current_user.messages.append(message)
-   #messages.append(messages)
-   db.session.commit()
-   return render_template("message.html", message=message, content=content, postdate=postdate)
+@rt.route('/Hi')
+def Hi():
+    user_id = request.args.get('user_id')
+    if user_id:
+        user = User.query.get_or_404(user_id)
+        return render_template('Hi.html', user=user)
+    elif current_user.is_authenticated:
+        return redirect(url_for('routes.Hi', user_id=current_user.id))
+    else:
+        return redirect('/loginform')
 
 
 
@@ -214,6 +230,7 @@ def user():
 		return redirect(url_for('routes.user', user_id=current_user.id))
 	else:
 		return redirect ('/loginform')
+
 
 @login_required
 @rt.route('/change_password', methods=['POST', 'GET'])
