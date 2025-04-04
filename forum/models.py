@@ -18,7 +18,13 @@ class User(UserMixin, db.Model):
     admin = db.Column(db.Boolean, default=False)
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
+<<<<<<< HEAD
 
+=======
+    messages = db.relationship("Message", backref="user")
+    #messages_sent = db.relationship("Message", backref='user')
+    #messages_received = db.relationship("Message", backref='user')
+>>>>>>> cb4e0d6 (yup)
 
     def __init__(self, email, username, password):
         self.email = email
@@ -122,6 +128,53 @@ class Comment(db.Model):
             self.savedresponce =  "Just a moment ago!"
         return self.savedresponce
 
+<<<<<<< HEAD
+=======
+class Message(db.Model):
+    title = db.Column(db.Text)
+    content = db.Column(db.Text)
+    postdate = db.Column(db.DateTime)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user_id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    #composite key made of key in User model
+    __table_args__ = (
+        db.PrimaryKeyConstraint(
+            sender_id, recipient_id,
+        ),
+    )
+
+    lastcheck = None
+    savedresponce = None
+
+    def __init__(self, title, content, postdate, sender_id, recipient_id):
+        self.title = title
+        self.content = content
+        self.postdate = postdate
+        self.sender_id = sender_id
+        self.recipient_id = recipient_id
+
+    def get_time_string(self):
+        # this only needs to be calculated every so often, not for every request
+        # this can be a rudamentary chache
+        now = datetime.datetime.now()
+        if self.lastcheck is None or (now - self.lastcheck).total_seconds() > 30:
+            self.lastcheck = now
+        else:
+            return self.savedresponce
+
+        diff = now - self.postdate
+        seconds = diff.total_seconds()
+        print(seconds)
+        if seconds / (60 * 60 * 24 * 30) > 1:
+            self.savedresponce = " " + str(int(seconds / (60 * 60 * 24 * 30))) + " months ago"
+        elif seconds / (60 * 60 * 24) > 1:
+            self.savedresponce = " " + str(int(seconds / (60 * 60 * 24))) + " days ago"
+        else:    
+            self.savedresponce = "Just a moment ago!"
+
+        return self.savedresponce
+>>>>>>> cb4e0d6 (yup)
 
 class Reply(db.Model):
     id = db.Column(db.Integer, primary_key=True)

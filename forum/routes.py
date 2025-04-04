@@ -139,73 +139,24 @@ def comment():
 
 
 @login_required
-@rt.route('/Chat', methods=["GET", "POST"])
-def Chat():
-    # session.clear()
-    # if request.method == "POST":
-    #     name = request.form.get('username')
-    #     create = request.form.get('create')
-    #     code = request.form.get('code')
-    #     join = request.form.get('join')
-    #     if not name:
-    #         return render_template('chat.html', error="Name is required", code=code)
-    #
-    #     room_code = None
-    #
-    #     if create is not None:
-    #         room_code = generate_room_code(6, [])
-    #         new_db_room = Room(room_code=room_code)
-    #         db.session.add(new_db_room)
-    #         db.session.commit()
-    #         # rooms[room_code] = new_room
-    #         if room_code not in rooms:
-    #             rooms[room_code] = {'members': 0, 'messages':[]}
-    #     elif join is not None:
-    #         # no code
-    #         if not code:
-    #             return render_template('chat.html', error="Please enter a room code to enter a chat room", name=name)
-    #         # invalid code
-    #         existing_room = Room.query.filter_by(room_code=code).first()
-    #         if not existing_room:
-    #             return render_template('chat.html', error="Room code invalid", name=name)
-    #         room_code = code
-    #     if room_code:
-    #         session['room'] = room_code
-    #         session['name'] = name
-    #         return redirect(url_for('routes.Room'))
-    # else:
-        return render_template('chat.html')
-
-#
-# @login_required
-# @rt.route('/Room')
-# def Room():
-#     room = session.get('room')
-#     name = session.get('username')
-#     if name is None or room is None or room not in rooms:
-#         return redirect(url_for('Chat'))
-#     messages = rooms[room]['messages']
-#     return render_template('room.html', room=room, user=name, messages=messages)
+@rt.route('/create_message', methods=['GET', 'POST'])
+def message():
+   message_id = int(request.args.get("message"))
+   message = Message.query.filter(Message.id == message_id).first()
+   if not message:
+        return error("That message does not exist!")
+   content = request.form['content']
+   postdate = datetime.datetime.now()
+   current_user.messages.append(message)
+   #messages.append(messages)
+   db.session.commit()
+   return render_template("message.html", message=message, content=content, postdate=postdate)
 
 
 
 
 
-# #implement like comments but on user instead of post
-# @login_required
-# @rt.route('/action_message', methods=['POST'])
-# def message():
-#    user_id = int(request.args.get("user"))
-#    user = User.query.filter(User.id == user_id).first()
-#    if not user:
-#        return error("This user does not exist!")
-#    content = request.form['content']
-#    postdate = datetime.datetime.now()
-#    message = Message(content, postdate)
-#    current_user.messages.append(message)
-#    user.messages.append(message)
-#    db.session.commit()
-#    return redirect(url_for('routes.Chat', post=message.user_id))
+
 
 
 

@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<p>Message</p>
+<div class="message_display">
+    <p>From: {{ message.sender_id }}</p>
+    <p>To: {{ message.recipient_id }}</p>
+    <p>Content: {{ message.content }}</p>
+    <p>Date: {{ message.postdate }}</p>
+</div>
+
+{% endblock %}
