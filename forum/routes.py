@@ -132,38 +132,36 @@ def comment():
     db.session.commit()
     return redirect("/viewpost?post=" + str(post_id))
 
-# @login_required
-# @rt.route('/message', methods=['GET', 'POST'])
-# def message():
-#    user_id = request.args.get('user_id')
-#    if user_id:
-#         user = User.query.get_or_404(user_id)
-#         return render_template('message.html', user=user, message=message,
-#                                content=content, postdate=postdate)
-#    elif current_user.is_authenticated:
-#        return redirect(url_for('routes.messages', user_id=current_user.id))
-#    else:
-#        return redirect('/loginform')
-#    # content = request.form['content']
-#    # postdate = datetime.datetime.now()
-#    # current_user.messages.append(message)
-#    # #messages.append(messages)
-#    # db.session.commit()
+
 
 @login_required
-@rt.route('/Hi')
-def Hi():
+@rt.route('/Chat')
+def Chat():
     user_id = request.args.get('user_id')
     if user_id:
         user = User.query.get_or_404(user_id)
-        return render_template('Hi.html', user=user)
+        return render_template('chat.html', user=user)
     elif current_user.is_authenticated:
-        return redirect(url_for('routes.Hi', user_id=current_user.id))
+        return redirect(url_for('routes.Chat', user_id=current_user.id))
     else:
         return redirect('/loginform')
 
 
-
+#implement like comments but on user instead of post
+@login_required
+@rt.route('/action_message', methods=['POST'])
+def message():
+   user_id = int(request.args.get("user"))
+   user = User.query.filter(User.id == user_id).first()
+   if not user:
+       return error("This user does not exist!")
+   content = request.form['content']
+   postdate = datetime.datetime.now()
+   message = Message(content, postdate)
+   current_user.messages.append(message)
+   user.messages.append(message)
+   db.session.commit()
+   return redirect(url_for('routes.Chat', post=message.user_id))
 
 
 

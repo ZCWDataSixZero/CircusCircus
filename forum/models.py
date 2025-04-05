@@ -125,28 +125,24 @@ class Comment(db.Model):
         return self.savedresponce
 
 class Message(db.Model):
-    title = db.Column(db.Text)
+    id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
     postdate = db.Column(db.DateTime)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user_id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     #composite key made of key in User model
-    __table_args__ = (
-        db.PrimaryKeyConstraint(
-            sender_id, recipient_id,
-        ),
-    )
+    # __table_args__ = (
+    #     db.PrimaryKeyConstraint(
+    #         sender_id, recipient_id,
+    #     ),
+    # )
 
     lastcheck = None
     savedresponce = None
 
-    def __init__(self, title, content, postdate, sender_id, recipient_id):
-        self.title = title
+    def __init__(self,  content, postdate):
         self.content = content
         self.postdate = postdate
-        self.sender_id = sender_id
-        self.recipient_id = recipient_id
 
     def get_time_string(self):
         # this only needs to be calculated every so often, not for every request
