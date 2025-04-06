@@ -1,8 +1,8 @@
 
-from flask import render_template, session
+from flask import render_template, request
 from flask_login import LoginManager
 from forum.models import Subforum, db, User
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, join_room, leave_room, send
 
 from . import create_app
 app = create_app()

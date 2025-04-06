@@ -10,7 +10,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from forum.models import User, Post, Comment, Subforum, valid_content, valid_title, db, generateLinkPath, error, Reply
 from forum.user import username_taken, email_taken, valid_username
 from markupsafe import Markup
-from flask_socketio import join_room, leave_room, send, rooms
+from flask_socketio import SocketIO, join_room,leave_room,send
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from roomcode import generate_room_code
