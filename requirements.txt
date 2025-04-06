@@ -1,11 +1,13 @@
-Flask
-Flask-Login
+Flask~=3.1.0
+Flask-Login~=0.6.3
 Flask-SQLAlchemy
 gunicorn
 itsdangerous
 Jinja2
 MarkupSafe
 SQLAlchemy
-Werkzeug
+Werkzeug~=3.1.3
 wheel
 honcho
+Flask-SocketIO~=5.5.1
+python-socketio~=5.12.1

@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
 	<div class="container-fluid d-flex justify-content-center">
 	  <a href="/" id="nolinks" class="navbar-brand">
@@ -17,4 +18,11 @@
 	{% else %}
 	<a href="/loginform">Click here to login or register!</a>
 	{% endif %}
-</div>
+
+
+{% if current_user.is_authenticated %}
+    <div class="actualuser">
+        <a href="{{ url_for('routes.user', user_id=current_user.id) }}">Profile</a>
+		    <a href="{{ url_for('routes.change_password') }}">Change Password</a>
+    </div>
+{% endif %}

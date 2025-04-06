@@ -4,6 +4,7 @@
 
 <div class="actualpost">
 	<div class="actualposttitle">
+{% if current_user.is_authenticated %}
 		<a href="/viewpost?post={{ post.id }}">{{post.title}}</a>
 		<div class="postposter" {% if post.user.admin %} style="color: red;" {% endif %}>
 			{{ post.user.username }}
@@ -14,64 +15,129 @@
 		</div>
 	</div>
 	<div class="postcontent">
-		{{post.content}}
+		{{post.content | safe }}
 	</div>
 
-</div>
-<div class="addcomment" id="addcomment">
-	<form action="/action_comment?post={{ post.id }}" method="POST">
-		<textarea class="form-control" placeholder="enter comment..." rows="6" name="content"></textarea><br>
-		<input class="btn btn-outline-primary" style="margin-bottom: 1%;" type="submit" value="Comment">
-	</form>
-</div>
-<div style="text-align: center;">
-
-	
-
-	{% if current_user.is_authenticated %}
-	<input type="button" class = "btn btn-outline-primary" id="displayaddcomment" onclick="toggle()" value="Add a comment">
-
 	{% else %}
-	<a href="/loginform">Login or register to make a comment</a>
+	<a href="/loginform">Login or register to view this post.</a>
 	{% endif %}
+
 </div>
+
+
+{% if current_user.is_authenticated %}
+	<div class="addcomment" id="addcomment" style="display: none;">
+		<form action="/action_comment?post={{ post.id }}" method="POST">
+			<textarea class="form-control" placeholder="enter comment..." rows="6" name="content"></textarea><br>
+			<input class="btn btn-outline-primary" style="margin-bottom: 1%;" type="submit" value="Comment">
+		</form>
+	</div>
+
+	<div style="text-align: center;">
+		<input type="button" id="displayaddcomment" onclick="toggleAddComment()" value="Add a comment">
+	</div>
+{% else %}
+	<div style="text-align: center;">
+		<a href="/loginform">Login or register to make a comment</a>
+	</div>
+{% endif %}
+
+
+
+
+
+
+
 {%if comments%}
 <div class="comments">
+{% if current_user.is_authenticated %}
 {% for comment in comments %}
-	
 	<div class="comment">
 		<div class="commentuser">
-			(<span  {% if comment.user.admin %} style="color: red;" {% endif %}>{{ comment.user.username }}</span>) - 
+			(<span  {% if comment.user.admin %} style="color: red;" {% endif %}>{{ comment.user.username }}</span>) -
 		</div>
 		<div class="commentcontent">
 			{{ comment.content }}
 		</div>
-		
+
 		<div class="commenttime">
 			{{ comment.get_time_string() }}
 		</div>
+
+		{% if current_user.is_authenticated %}
+        <div style="margin-left: 20px;">
+            <input type="button" id="displayreplyform-{{ comment.id }}" onclick="toggleReply('replyform-{{ comment.id }}', 'displayreplyform-{{ comment.id }}')" value="Reply">
+            <div id="replyform-{{ comment.id }}" style="display: none;">
+                <form method="POST" action="{{ url_for('routes.action_reply', comment_id=comment.id) }}">
+                    <textarea name="content" placeholder="Write a reply..." required></textarea><br>
+                    <button type="submit">Post Reply</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+		{% if comment.replies %}
+           <div class="replies">
+               {% for reply in comment.replies %}
+                   <div class="reply" style="margin-left: 40px; border-left: 1px solid #ccc; padding-left: 10px;">
+                       <div class="replyuser">
+                           (<span {% if reply.user.admin %} style="color: red;" {% endif %}>{{ reply.user.username }}</span>) -
+                       </div>
+                       <div class="replycontent">
+                           {{ reply.content }}
+                       </div>
+                       <div class="replytime">
+                           {{ reply.get_time_string() }}
+                       </div>
+                   </div>
+               {% endfor %}
+           </div>
+       {% endif %}
+
 	</div>
 	<br>
-	
 {% endfor %}
+{% else %}
+	<a href="/loginform">Login or register to view comments</a>
+	{% endif %}
 </div>
+
+
 {% endif %}
+
 <script type="text/javascript">
-function toggle(){
-	var div = document.getElementById("addcomment");
-	var button = document.getElementById("displayaddcomment")
-	if(div.style.display == "none" || div.style.display.trim() == ""){
-		div.style.display = "inline";
-		button.value="Hide";
-	}else{
-		div.style.display = "none";
-		button.value="Add a comment"
-	}
-	
+function toggleAddComment(){
+    var div = document.getElementById('addcomment');
+    var button = document.getElementById('displayaddcomment');
+
+    if (div.style.display === "none" || div.style.display.trim() === "") {
+        div.style.display = "block";
+        button.value = "Hide Comment";
+    } else {
+        div.style.display = "none";
+        button.value = "Add a comment";
+    }
+}
+
+function toggleReply(elementIdToShowHide, buttonId){
+    var div = document.getElementById(elementIdToShowHide);
+    var button = document.getElementById(buttonId);
+
+    if (div.style.display === "none" || div.style.display.trim() === "") {
+        div.style.display = "block";
+        button.value = "Hide Reply";
+    } else {
+        div.style.display = "none";
+        button.value = "Reply";
+    }
 }
 </script>
 
 
+
+
+
+
+
+
 {% endblock %}
-
-
