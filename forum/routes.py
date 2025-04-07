@@ -107,6 +107,7 @@ def viewpost():
     comments = Comment.query.filter(Comment.post_id == postid).order_by(Comment.id.desc()) # no need for scalability now
     return render_template("viewpost.html", post=post, path=subforumpath, comments=comments)
 
+
 @login_required
 @rt.route('/action_comment', methods=['POST', 'GET'])
 def comment():
