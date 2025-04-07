@@ -10,7 +10,7 @@
                 {% for post in posts %}
                     <li>
                         <a href="/viewpost?post={{ post.id }}">{{post.title}}</a>
-                        <p>{{post.content | safe }}</p>
+                        <p>{{ post.content }}</p>
                     </li>
                 {% endfor %}
             </ul>
