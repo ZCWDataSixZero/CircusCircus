@@ -108,6 +108,7 @@ def viewpost():
     content_html = markdown.markdown(post.content)
     return render_template("viewpost.html", post=post, path=subforumpath, comments=comments, content_html=Markup(content_html))
 
+
 @login_required
 @rt.route('/action_comment', methods=['POST', 'GET'])
 def comment():
