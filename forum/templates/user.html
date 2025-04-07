@@ -11,10 +11,14 @@
                     <li>
                         <a href="/viewpost?post={{ post.id }}">{{post.title}}</a>
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <p>{{ post.content }}</p>
 =======
                         <p>{{ post.content | safe }}</p>
 >>>>>>> 4681e9d (Removed content_html | safe and replaced with content | safe)
+=======
+                        <p>{{ post.content_html | safe }}</p>
+>>>>>>> 1135809 (users can only view posts in profile, they will have to click on the post to view entire post.)
                     </li>
                 {% endfor %}
             </ul>
