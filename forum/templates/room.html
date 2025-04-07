@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block body %}
+{{ path|safe }}
+
+<div id="room-container">
+    <h1 id="home-header">Forum Chat</h1>
+    <div id="room-subscription">
+        <h2 id="room-code-display"> Room Code: <span>{{room}}</span></h2>
+        <a href="/" id="leave-chat-btn">Leave the Chat</a>
+    </div>
+</div>
+
+<div id="chat-room-widget">
+    <div id="msg-container"></div>
+</div>
+{% endblock %}
