@@ -10,7 +10,11 @@
                 {% for post in posts %}
                     <li>
                         <a href="/viewpost?post={{ post.id }}">{{post.title}}</a>
+<<<<<<< HEAD
                         <p>{{ post.content }}</p>
+=======
+                        <p>{{ post.content | safe }}</p>
+>>>>>>> 4681e9d (Removed content_html | safe and replaced with content | safe)
                     </li>
                 {% endfor %}
             </ul>
