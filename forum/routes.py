@@ -113,17 +113,8 @@ def viewpost():
     if not post.subforum.path:
         subforumpath = generateLinkPath(post.subforum.id)
     comments = Comment.query.filter(Comment.post_id == postid).order_by(Comment.id.desc()) # no need for scalability now
-<<<<<<< HEAD
-    return render_template("viewpost.html", post=post, path=subforumpath, comments=comments)
-=======
-    #Turns markdown to HTML
-
     content_html = markdown.markdown(post.content)
-
-    #Markdown gets rendered here
     return render_template("viewpost.html", post=post, path=subforumpath, comments=comments, content_html=Markup(content_html))
->>>>>>> 08896a7 (Merge)
-
 
 @login_required
 @rt.route('/action_comment', methods=['POST', 'GET'])
@@ -237,7 +228,7 @@ def action_post():
     title = request.form['title']
     content = request.form['content']
     content_html = markdown.markdown(content)
-    print(f"Generated HTML: {content_html}")
+    print(f"Generated HTML: {content}")
     #check for valid posting
     errors = []
     retry = False
