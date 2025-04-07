@@ -137,6 +137,18 @@ def Chat():
     else:
         return redirect('/loginform')
 
+@login_required
+@rt.route('/Room')
+def Room():
+    user_id = request.args.get('user_id')
+    if user_id:
+        user = User.query.get_or_404(user_id)
+        return render_template('room.html', user=user)
+    elif current_user.is_authenticated:
+        return redirect(url_for('routes.Room', user_id=current_user.id))
+    else:
+        return redirect('/loginform')
+
 
 #implement like comments but on user instead of post
 @login_required
