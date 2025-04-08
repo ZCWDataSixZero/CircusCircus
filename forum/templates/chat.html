@@ -2,55 +2,6 @@
 {% block body %}
 {{ path|safe }}
 
-<div id="home-container">
-    <h1 id="home-header"> Forum Chat </h1>
-    {% if error %}
-    <p id="error">{{error}}</p>
-    {% endif %}
-    <form method="post" id="chat-widget-home">
-        <div id="username-input">
-            <label for="username">Enter your username</label>
-            <input type="text" id="username" name="username" placeholder="Enter username" value="{{username}}" />
-        </div>
-
-        <div>
-            <label for="code" id="code-label">Enter chat room code</label>
-            <input type="text" id="code" name="code" placeholder="Enter code" value="{{code}}" />
-            <button type="submit" id="join" name="join">Join Room</button>
-        </div>
-        <hr />
-        <button type="submit" id="create" name="create">Create Room</button>
-    </form>
-
-</div>
-
-<!--    {% if current_user.is_authenticated %}-->
-<!--        <h2> {{ user.username }}'s Personal Chatroom</h2>-->
-<!--<div class="message_display">-->
-<!--   	<form action="/Chat?user_id" method="POST">-->
-<!--			<textarea class="form-control" placeholder="start chatting now..." rows="6" name="content"></textarea><br>-->
-<!--			<input class="btn btn-outline-primary" style="margin-bottom: 1%;" type="submit" value="Send">-->
-<!--		</form>-->
-<!--</div>-->
-<!--    Send To: <input type="text" id="send_to_username">-->
-<!--    Message: <input type="text" id="private_message">-->
-<!--    <button id="send_private_message">Send</button>-->
-
-<!--    {% endif %}-->
-
-{% endblock %}
-
-<!--<p>Message</p>-->
-<!--<div class="message_display">-->
-<!--    <p>From: {{ message.sender_id }}</p>-->
-<!--    <p>To: {{ message.recipient_id }}</p>-->
-<!--    <p>Content: {{ message.content }}</p>-->
-<!--    <p>Date: {{ message.postdate }}</p>-->
-<!--</div>-->
-{% extends 'layout.html' %}
-{% block body %}
-{{ path|safe }}
-
 
     <h2> Data Cohort's Chatroom </h2>
     <div class="message_holder"></div>
