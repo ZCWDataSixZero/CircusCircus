@@ -13,6 +13,8 @@ class Config:
     FLASK_APP = 'forum.app'
 
     # Database
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///circuscircus.db'
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///circuscircus.db'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:1nBrightestDay@localhost:3306/circus'
+
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False

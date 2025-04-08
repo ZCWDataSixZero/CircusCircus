@@ -12,9 +12,9 @@ db = SQLAlchemy()
 #OBJECT MODELS
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.Text, unique=True)
+    username = db.Column(db.String(64), unique=True)
     password_hash = db.Column(db.Text)
-    email = db.Column(db.Text, unique=True)
+    email = db.Column(db.String(64), unique=True)
     admin = db.Column(db.Boolean, default=False)
     posts = db.relationship("Post", backref="user")
     comments = db.relationship("Comment", backref="user")
@@ -29,7 +29,7 @@ class User(UserMixin, db.Model):
     
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Text)
+    title = db.Column(db.String(64))
     content = db.Column(db.Text)
     comments = db.relationship("Comment", backref="post")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -73,7 +73,7 @@ class Post(db.Model):
 
 class Subforum(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Text, unique=True)
+    title = db.Column(db.String(64), unique=True)
     description = db.Column(db.Text)
     subforums = db.relationship("Subforum")
     parent_id = db.Column(db.Integer, db.ForeignKey('subforum.id'))
