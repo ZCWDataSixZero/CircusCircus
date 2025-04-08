@@ -106,7 +106,9 @@ def viewpost():
         subforumpath = generateLinkPath(post.subforum.id)
     comments = Comment.query.filter(Comment.post_id == postid).order_by(Comment.id.desc()) # no need for scalability now
     #Turns markdown to HTML
+
     content_html = markdown.markdown(post.content)
+
     #Markdown gets rendered here
     return render_template("viewpost.html", post=post, path=subforumpath, comments=comments, content_html=Markup(content_html))
 
