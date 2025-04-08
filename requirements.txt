@@ -11,3 +11,4 @@ wheel
 honcho
 Flask-SocketIO~=5.5.1
 python-socketio~=5.12.1
+Markdown~=3.7

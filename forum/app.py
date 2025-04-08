@@ -1,5 +1,5 @@
 
-from flask import render_template
+from flask import render_template, session
 from flask_login import LoginManager
 from forum.models import Subforum, db, User
 from flask_socketio import SocketIO
@@ -7,6 +7,7 @@ from flask_socketio import SocketIO
 from . import create_app
 app = create_app()
 socketio = SocketIO(app)
+
 
 app.config['SITE_NAME'] = 'Something, Anything, that is not that'
 app.config['SITE_DESCRIPTION'] = 'a forum for Data to learn from'
@@ -60,3 +61,51 @@ def index():
 
 
 
+def messageReceived(methods=['GET', 'POST']):
+    print('message was received!!!')
+
+@socketio.on('my event')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', json, callback=messageReceived)
+
+# @socketio.on('connect')
+# def handle_connect():
+#     username = session.get('username')
+#     room = session.get('room')
+#     if username is None or room is None:
+#         return
+#     if room not in rooms:
+#         leave_room(room)
+#     join_room(room)
+#     send({
+#         "sender": "",
+#         "message": f"{username} has entered the chat"
+#     }, to=room)
+#     rooms[room]["members"] += 1
+#
+# @socketio.on('message')
+# def handle_message(payload):
+#     room = session.get('room')
+#     name = session.get('name')
+#     if room not in rooms:
+#         return
+#     message = {
+#             "sender": name,
+#             "message": payload["message"]
+#         }
+#     send(message, to=room)
+#     rooms[room]["messages"].append(message)
+# @socketio.on('disconnect')
+# def handle_disconnect():
+#     room = session.get("room")
+#     name = session.get("name")
+#     leave_room(room)
+#     if room in rooms:
+#         rooms[room]["members"] -= 1
+#         if rooms[room]["members"] <= 0:
+#             del rooms[room]
+#         send({
+#         "message": f"{name} has left the chat",
+#         "sender": ""
+#     }, to=room)
