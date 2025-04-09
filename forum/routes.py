@@ -14,6 +14,7 @@ from forum.models import User, Post, Comment, Subforum, valid_content, valid_tit
 from forum.user import username_taken, email_taken, valid_username
 from markupsafe import Markup
 from flask_socketio import join_room, leave_room, send, rooms
+from flask_socketio import join_room, leave_room, send, rooms
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from roomcode import generate_room_code
@@ -129,6 +130,13 @@ def viewpost():
     #Markdown gets rendered here
     return render_template("viewpost.html", post=post, path=subforumpath, comments=comments, content_html=Markup(content_html))
 
+    #Turns markdown to HTML
+
+    content_html = markdown.markdown(post.content)
+
+    #Markdown gets rendered here
+    return render_template("viewpost.html", post=post, path=subforumpath, comments=comments, content_html=Markup(content_html))
+
 
 @login_required
 @rt.route('/action_comment', methods=['POST', 'GET'])
@@ -144,6 +152,8 @@ def comment():
     post.comments.append(comment)
     db.session.commit()
     return redirect("/viewpost?post=" + str(post_id))
+
+
 
 
 
@@ -215,6 +225,74 @@ def Chat():
 #    user.messages.append(message)
 #    db.session.commit()
 #    return redirect(url_for('routes.Chat', post=message.user_id))
+@rt.route('/Chat', methods=["GET", "POST"])
+def Chat():
+    # session.clear()
+    # if request.method == "POST":
+    #     name = request.form.get('username')
+    #     create = request.form.get('create')
+    #     code = request.form.get('code')
+    #     join = request.form.get('join')
+    #     if not name:
+    #         return render_template('chat.html', error="Name is required", code=code)
+    #
+    #     room_code = None
+    #
+    #     if create is not None:
+    #         room_code = generate_room_code(6, [])
+    #         new_db_room = Room(room_code=room_code)
+    #         db.session.add(new_db_room)
+    #         db.session.commit()
+    #         # rooms[room_code] = new_room
+    #         if room_code not in rooms:
+    #             rooms[room_code] = {'members': 0, 'messages':[]}
+    #     elif join is not None:
+    #         # no code
+    #         if not code:
+    #             return render_template('chat.html', error="Please enter a room code to enter a chat room", name=name)
+    #         # invalid code
+    #         existing_room = Room.query.filter_by(room_code=code).first()
+    #         if not existing_room:
+    #             return render_template('chat.html', error="Room code invalid", name=name)
+    #         room_code = code
+    #     if room_code:
+    #         session['room'] = room_code
+    #         session['name'] = name
+    #         return redirect(url_for('routes.Room'))
+    # else:
+        return render_template('chat.html')
+
+#
+# @login_required
+# @rt.route('/Room')
+# def Room():
+#     room = session.get('room')
+#     name = session.get('username')
+#     if name is None or room is None or room not in rooms:
+#         return redirect(url_for('Chat'))
+#     messages = rooms[room]['messages']
+#     return render_template('room.html', room=room, user=name, messages=messages)
+
+
+
+
+
+# #implement like comments but on user instead of post
+# @login_required
+# @rt.route('/action_message', methods=['POST'])
+# def message():
+#    user_id = int(request.args.get("user"))
+#    user = User.query.filter(User.id == user_id).first()
+#    if not user:
+#        return error("This user does not exist!")
+#    content = request.form['content']
+#    postdate = datetime.datetime.now()
+#    message = Message(content, postdate)
+#    current_user.messages.append(message)
+#    user.messages.append(message)
+#    db.session.commit()
+#    return redirect(url_for('routes.Chat', post=message.user_id))
+
 
 
 
@@ -242,19 +320,19 @@ def action_post():
     title = request.form['title']
     content = request.form['content']
     content_html = markdown.markdown(content)
-    print(f"Generated HTML: {content_html}")
+    print(f"Generated HTML: {content}")
     #check for valid posting
     errors = []
     retry = False
     if not valid_title(title):
       errors.append("Title must be between 4 and 140 characters long!")
       retry = True
-    if not valid_content(content_html):
+    if not valid_content(content):
       errors.append("Post must be between 10 and 5000 characters long!")
       retry = True
     if retry:
       return render_template("createpost.html", content_html=Markup(content_html), subforum=subforum,  errors=errors)
-    post = Post(title, content_html, datetime.datetime.now())
+    post = Post(title, content, datetime.datetime.now())
     subforum.posts.append(post)
     user.posts.append(post)
     db.session.commit()

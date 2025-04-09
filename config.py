@@ -14,7 +14,7 @@ class Config:
 
     # Database
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///circuscircus.db'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:PASSWORD@localhost:3306/circus'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://new_user:password@localhost:3306/circus'
 
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
