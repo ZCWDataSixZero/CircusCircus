@@ -13,8 +13,8 @@ app.config['SITE_NAME'] = 'Something, Anything, that is not that'
 app.config['SITE_DESCRIPTION'] = 'a forum for Data to learn from'
 app.config['FLASK_DEBUG'] = 1
 
-if __name__ == '__main__':
-    socketio.run(app,port=5555, debug=True)
+#if __name__ == '__main__':
+#    socketio.run(app,port=5555, debug=True)
 
 def init_site():
     print("creating initial subforums")

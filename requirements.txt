@@ -1,6 +1,8 @@
 bidict==0.23.1
 blinker==1.9.0
+cffi==1.17.1
 click==8.1.8
+cryptography==44.0.2
 Flask==3.1.0
 Flask-Login==0.6.3
 Flask-PageDown==0.4.0
@@ -14,6 +16,7 @@ Jinja2==3.1.6
 Markdown==3.7
 MarkupSafe==3.0.2
 packaging==24.2
+pycparser==2.22
 PyMySQL==1.1.1
 python-engineio==4.11.2
 python-socketio==5.12.1
