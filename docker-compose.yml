@@ -1,0 +1,45 @@
+services:
+  mysql-db:
+    image: mysql:8.0.41
+    container_name: mysql-db
+    # restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=flaskdb
+      - MYSQL_USER=flaskuser
+      - MYSQL_PASSWORD=flaskpass
+    ports:
+      - "3309:3309"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    #  - ./mysql-init:/docker-entrypoint-initdb.d
+    #networks:
+    #  - flask-network
+
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flask-app
+    # restart: always
+    ports:
+      - "5010:5010"
+    environment:
+      - MYSQL_HOST=mysql-db
+      - MYSQL_USER=flaskuser
+      - MYSQL_PASSWORD=flaskpass
+      - MYSQL_DB=flaskdb
+      - FLASK_RUN_PORT=5010
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql-db
+    #networks:
+    #  - flask-network
+
+#networks:
+#  flask-network:
+#    driver: bridge
+
+volumes:
+  mysql-data:
